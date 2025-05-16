@@ -11,6 +11,9 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# Get secret API key from environment
+API_KEY = os.environ.get('SECRET_API_KEY')
+
 # Load label mapping
 with open('model/labels.json', 'r') as f:
     labels = json.load(f)
@@ -25,6 +28,11 @@ output_details = interpreter.get_output_details()
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    # Check for API key in header
+    client_key = request.headers.get('x-api-key')
+    if client_key != API_KEY:
+        return jsonify({'error': 'Unauthorized'}), 401
+
     if 'file' not in request.files:
         return jsonify({'error': 'No audio file provided'}), 400
 
