@@ -114,6 +114,10 @@ def predict():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+@app.route('/')
+def index():
+    return "✅ Flask Speech Recognition API is running! Use POST /predict to send audio."
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
