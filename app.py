@@ -56,6 +56,7 @@ def predict():
             text = recognizer.recognize_google(audio_data, language='tl-PH')
             print(f"[INFO] Transcribed text: {text}")
             return jsonify({
+                'confidence': .95,
                 'prediction': text,
                 'engine': 'Google Speech Recognition',
                 'saved_file': wav_path
